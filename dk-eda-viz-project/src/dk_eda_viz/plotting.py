@@ -25,8 +25,11 @@ def plot_missing(df):
         return None
 
     fig, ax = plt.subplots(figsize=(8, 0.5 * len(missing) + 1.5))
-    ax.barh(missing.index, missing.values, color=ACCENT)
+    ax.barh(missing.index, missing.values, color=ACCENT, height=0.6)
     ax.invert_yaxis()  # largest at the top
+    ax.grid(axis="x", visible=True)   # only vertical lines help read bar length
+    ax.grid(axis="y", visible=False)
+    ax.set_xlim(0, missing.max() * 1.2)  # leave room for labels near 100%
     for y, pct in enumerate(missing.values):
         ax.text(pct + 0.5, y, f"{pct:.1f}%", va="center", color=TEXT_DARK)
     ax.set_xlabel("% missing")
@@ -42,11 +45,13 @@ def plot_dist(df, column):
     median = values.median()
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    ax.hist(values, bins=20, color=ACCENT)
-    ax.axvline(median, color=TEXT_DARK, linewidth=1.5)
+    ax.hist(values, bins=20, color=ACCENT, edgecolor="white", linewidth=0.8)
+    ax.grid(axis="y", visible=True)   # horizontal lines help read bar heights
+    ax.grid(axis="x", visible=False)
+    ax.axvline(median, color=TEXT_DARK, linewidth=1.5, linestyle="--")
     ax.annotate(f"median = {median:g}", xy=(median, ax.get_ylim()[1]),
                 xytext=(6, -6), textcoords="offset points",
-                va="top", color=TEXT_DARK)
+                va="top", color=TEXT_DARK, fontweight="bold")
     ax.set_xlabel(column)
     ax.set_ylabel("count")
     ax.set_title(f"Distribution of {column}")
@@ -61,7 +66,7 @@ def plot_corr(df):
     labels = corr.columns
 
     fig, ax = plt.subplots(figsize=(1.1 * len(labels) + 2, 1.1 * len(labels) + 2))
-    im = ax.imshow(corr.values, cmap="Blues", vmin=-1, vmax=1)
+    im = ax.imshow(corr.values, cmap="RdBu_r", vmin=-1, vmax=1)
     fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
 
     ax.set_xticks(range(len(labels)))

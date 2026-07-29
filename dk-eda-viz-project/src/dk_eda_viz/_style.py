@@ -31,8 +31,9 @@ def apply_style():
         "axes.spines.top": False,
         "axes.spines.right": False,
 
-        # Grid: light gray, thin, drawn below the data
-        "axes.grid": True,
+        # Grid: light gray, thin, drawn below the data. Off globally — each
+        # plotting function turns on only the axis that helps read its chart.
+        "axes.grid": False,
         "grid.color": "#EAEAEA",
         "grid.linewidth": 0.6,
         "axes.axisbelow": True,
@@ -41,16 +42,19 @@ def apply_style():
         "axes.titlelocation": "left",
         "axes.titleweight": "bold",
         "axes.titlesize": 14,
+        "axes.titlepad": 14,
 
         # Typography: sans-serif, base size 11, labels size 10
         "font.family": "sans-serif",
+        "font.sans-serif": ["Helvetica Neue", "Arial", "DejaVu Sans"],
         "font.size": 11,
         "axes.labelsize": 10,
 
-        # Colors: dark text/labels/ticks
+        # Colors: dark text/labels/ticks, light axes border
         "text.color": TEXT_DARK,
         "axes.labelcolor": TEXT_DARK,
-        "axes.edgecolor": TEXT_DARK,
+        "axes.edgecolor": "#CCCCCC",
+        "axes.linewidth": 0.8,
         "xtick.color": TEXT_DARK,
         "ytick.color": TEXT_DARK,
 
