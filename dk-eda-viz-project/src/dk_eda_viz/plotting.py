@@ -1,21 +1,14 @@
-"""Plotting functions for quick exploratory data analysis.
-
-Every function applies the shared package style, uses only matplotlib and
-pandas, and returns the matplotlib ``Figure`` (it never calls ``plt.show()``)
-so the caller decides how to display or save it.
-"""
-
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from ._style import apply_style, ACCENT, TEXT_DARK
+from ._style import apply_style, ACCENT, TEXT_LIGHT, TEXT_ON_ACCENT, BACKGROUND
 
 
 def plot_missing(df):
     """Horizontal bar chart of percent missing per column, worst first.
 
-    Only columns with missing values are shown, each bar labeled with its
-    percentage. Returns None (after printing a note) if nothing is missing.
+    Value labels are drawn directly on each bar (inside it when there's room,
+    just outside it in light text when the bar is too short to hold the label).
     """
     apply_style()
     missing = df.isna().mean() * 100
@@ -25,13 +18,23 @@ def plot_missing(df):
         return None
 
     fig, ax = plt.subplots(figsize=(8, 0.5 * len(missing) + 1.5))
-    ax.barh(missing.index, missing.values, color=ACCENT, height=0.6)
-    ax.invert_yaxis()  # largest at the top
-    ax.grid(axis="x", visible=True)   # only vertical lines help read bar length
+    bars = ax.barh(missing.index, missing.values, color=ACCENT, height=0.6)
+    ax.invert_yaxis()
+    ax.grid(axis="x", visible=True)
     ax.grid(axis="y", visible=False)
-    ax.set_xlim(0, missing.max() * 1.2)  # leave room for labels near 100%
-    for y, pct in enumerate(missing.values):
-        ax.text(pct + 0.5, y, f"{pct:.1f}%", va="center", color=TEXT_DARK)
+    max_val = missing.max()
+    ax.set_xlim(0, max_val * 1.15)
+
+    for bar, pct in zip(bars, missing.values):
+        width = bar.get_width()
+        y = bar.get_y() + bar.get_height() / 2
+        if width > max_val * 0.15:
+            ax.text(width - max_val * 0.02, y, f"{pct:.1f}%", va="center", ha="right",
+                     color=TEXT_ON_ACCENT, fontweight="bold")
+        else:
+            ax.text(width + max_val * 0.02, y, f"{pct:.1f}%", va="center", ha="left",
+                     color=TEXT_LIGHT, fontweight="bold")
+
     ax.set_xlabel("% missing")
     ax.set_title(f"{len(missing)} of {df.shape[1]} columns have missing values")
     fig.tight_layout()
@@ -45,40 +48,15 @@ def plot_dist(df, column):
     median = values.median()
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    ax.hist(values, bins=20, color=ACCENT, edgecolor="white", linewidth=0.8)
-    ax.grid(axis="y", visible=True)   # horizontal lines help read bar heights
+    ax.hist(values, bins=20, color=ACCENT, edgecolor=BACKGROUND, linewidth=0.8)
+    ax.grid(axis="y", visible=True)
     ax.grid(axis="x", visible=False)
-    ax.axvline(median, color=TEXT_DARK, linewidth=1.5, linestyle="--")
+    ax.axvline(median, color=TEXT_LIGHT, linewidth=1.5, linestyle="--", alpha=0.8)
     ax.annotate(f"median = {median:g}", xy=(median, ax.get_ylim()[1]),
                 xytext=(6, -6), textcoords="offset points",
-                va="top", color=TEXT_DARK, fontweight="bold")
+                va="top", color=TEXT_LIGHT, fontweight="bold")
     ax.set_xlabel(column)
     ax.set_ylabel("count")
     ax.set_title(f"Distribution of {column}")
-    fig.tight_layout()
-    return fig
-
-
-def plot_corr(df):
-    """Correlation heatmap of numeric columns, annotated with each value."""
-    apply_style()
-    corr = df.select_dtypes(include="number").corr()
-    labels = corr.columns
-
-    fig, ax = plt.subplots(figsize=(1.1 * len(labels) + 2, 1.1 * len(labels) + 2))
-    im = ax.imshow(corr.values, cmap="RdBu_r", vmin=-1, vmax=1)
-    fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
-
-    ax.set_xticks(range(len(labels)))
-    ax.set_yticks(range(len(labels)))
-    ax.set_xticklabels(labels, rotation=45, ha="right")
-    ax.set_yticklabels(labels)
-    ax.grid(False)
-    for i in range(len(labels)):
-        for j in range(len(labels)):
-            value = corr.values[i, j]
-            color = "white" if abs(value) > 0.5 else TEXT_DARK
-            ax.text(j, i, f"{value:.2f}", ha="center", va="center", color=color)
-    ax.set_title("Correlation between numeric columns")
     fig.tight_layout()
     return fig

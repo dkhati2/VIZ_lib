@@ -1,67 +1,40 @@
-"""Central matplotlib styling for the package.
-
-``apply_style()`` is called once at the top of every plotting function in
-``plotting.py`` so that all charts share one consistent look — a light grid
-drawn beneath the data, no top/right spines, a bold left-aligned title, and a
-muted palette with a single accent color for the subject of the plot.
-
-The style follows a few visualization principles: maximize the data-ink ratio,
-avoid chart junk, and prefer direct labeling over legends where it works.
-
-Matplotlib is the only plotting dependency (no seaborn, no plotly).
-"""
-
 import matplotlib.pyplot as plt
 
-# Color constants
-ACCENT = "#2E5EAA"      # primary color for the subject of a plot
-NEUTRAL = "#B0B0B0"     # gray for comparison / context
-BACKGROUND = "#FFFFFF"  # figure and axes background
-TEXT_DARK = "#2B2B2B"   # text, labels, and ticks
+ACCENT = "#FAB387"          # warm peach — primary color for the subject of a plot
+NEUTRAL = "#6C7086"         # muted slate — gray for comparison / context
+BACKGROUND = "#1E1E2E"      # dark slate background
+SURFACE = "#313244"         # slightly lighter than background — gridlines, spines
+TEXT_LIGHT = "#CDD6F4"      # soft off-white — text, labels, ticks
+TEXT_ON_ACCENT = "#1E1E2E"  # dark text for labels placed on top of the light accent color
 
 
 def apply_style():
-    """Update ``plt.rcParams`` with the package's shared visual style.
-
-    Call this once at the start of a plotting function, before creating the
-    figure, so every chart in the package looks the same.
-    """
+    """Update plt.rcParams with the package's dark, warm-accented visual style."""
     plt.rcParams.update({
-        # Spines: keep only left and bottom (maximize data-ink ratio)
         "axes.spines.top": False,
         "axes.spines.right": False,
-
-        # Grid: light gray, thin, drawn below the data. Off globally — each
-        # plotting function turns on only the axis that helps read its chart.
+        "axes.spines.left": False,
+        "axes.spines.bottom": False,
         "axes.grid": False,
-        "grid.color": "#EAEAEA",
+        "grid.color": SURFACE,
         "grid.linewidth": 0.6,
+        "grid.alpha": 0.7,
         "axes.axisbelow": True,
-
-        # Title: left-aligned, bold, size 14
         "axes.titlelocation": "left",
         "axes.titleweight": "bold",
         "axes.titlesize": 14,
         "axes.titlepad": 14,
-
-        # Typography: sans-serif, base size 11, labels size 10
+        "axes.titlecolor": TEXT_LIGHT,
         "font.family": "sans-serif",
         "font.sans-serif": ["Helvetica Neue", "Arial", "DejaVu Sans"],
         "font.size": 11,
         "axes.labelsize": 10,
-
-        # Colors: dark text/labels/ticks, light axes border
-        "text.color": TEXT_DARK,
-        "axes.labelcolor": TEXT_DARK,
-        "axes.edgecolor": "#CCCCCC",
-        "axes.linewidth": 0.8,
-        "xtick.color": TEXT_DARK,
-        "ytick.color": TEXT_DARK,
-
-        # Backgrounds
+        "text.color": TEXT_LIGHT,
+        "axes.labelcolor": TEXT_LIGHT,
+        "xtick.color": TEXT_LIGHT,
+        "ytick.color": TEXT_LIGHT,
         "figure.facecolor": BACKGROUND,
         "axes.facecolor": BACKGROUND,
-
-        # Resolution
+        "savefig.facecolor": BACKGROUND,
         "figure.dpi": 100,
     })
