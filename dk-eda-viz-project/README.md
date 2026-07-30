@@ -30,6 +30,15 @@ eda.plot_missing(df)
 | `plot_missing(df)` | Horizontal bar chart of percent missing per column, labeled on the bars. |
 | `plot_dist(df, column)` | Histogram of one numeric column with the median marked in place. |
 
+## Development
+
+Tests use [pytest](https://pytest.org) (a dev-only tool — not a runtime dependency):
+
+```bash
+pip install pytest
+pytest tests/
+```
+
 ## Why this exists
 
 pandas and matplotlib are the only dependencies — no seaborn, no plotly. The functions have boring, descriptive names and each does one job. The plots are styled with good visualization principles in mind — a high data-ink ratio, no chart junk, and direct labeling — rather than the loud matplotlib/seaborn defaults.
