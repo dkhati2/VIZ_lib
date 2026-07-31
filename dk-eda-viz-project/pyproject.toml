@@ -9,10 +9,22 @@ description = "Boring, aesthetic EDA helpers for pandas — check missing data, 
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
+authors = [{ name = "Disha Khati", email = "dishakhati2004@gmail.com" }]
 dependencies = [
     "pandas>=1.5",
     "matplotlib>=3.5",
 ]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+
+[project.urls]
+Homepage = "https://github.com/dkhati2/viz_lib"
+Repository = "https://github.com/dkhati2/viz_lib"
 
 [tool.setuptools.packages.find]
 where = ["src"]
