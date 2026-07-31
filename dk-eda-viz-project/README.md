@@ -3,7 +3,7 @@
 Boring, aesthetic EDA helpers for pandas — check missing data, get a quick summary, and plot without matplotlib's default look.
 
 [![PyPI](https://img.shields.io/pypi/v/dk-eda-viz)](https://pypi.org/project/dk-eda-viz/)
-[![Python](https://img.shields.io/pypi/pyversions/dk-eda-viz)](https://pypi.org/project/dk-eda-viz/)
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue)](https://pypi.org/project/dk-eda-viz/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
 ## Install
