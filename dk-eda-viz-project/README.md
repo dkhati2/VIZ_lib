@@ -1,6 +1,10 @@
 # dk-eda-viz
 
-Boring, aesthetic EDA helpers for pandas — check missing data, summarize, and plot without matplotlib/seaborn defaults.
+Boring, aesthetic EDA helpers for pandas — check missing data, get a quick summary, and plot without matplotlib's default look.
+
+[![PyPI](https://img.shields.io/pypi/v/dk-eda-viz)](https://pypi.org/project/dk-eda-viz/)
+[![Python](https://img.shields.io/pypi/pyversions/dk-eda-viz)](https://pypi.org/project/dk-eda-viz/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
 ## Install
 
@@ -8,37 +12,34 @@ Boring, aesthetic EDA helpers for pandas — check missing data, summarize, and 
 pip install dk-eda-viz
 ```
 
-## Use
+## Quick start
 
 ```python
 import pandas as pd
 import dk_eda_viz as eda
 
 df = pd.read_csv("data.csv")
+
 eda.summarize(df)
 eda.check_na(df)
 eda.plot_missing(df)
+eda.plot_dist(df, "salary")
 ```
 
 ## Functions
 
 | Function | What it does |
-|----------|--------------|
-| `check_na(df)` | Series of missing-value counts per column, worst first, zeros dropped. |
-| `convert_types(df, mapping=None)` | Return a copy with dtypes cast — from a mapping, or auto-detected numeric/datetime. |
-| `summarize(df)` | Plain dict of shape, dtypes, percent missing, and numeric vs categorical columns. |
-| `plot_missing(df)` | Horizontal bar chart of percent missing per column, labeled on the bars. |
-| `plot_dist(df, column)` | Histogram of one numeric column with the median marked in place. |
-
-## Development
-
-Tests use [pytest](https://pytest.org) (a dev-only tool — not a runtime dependency):
-
-```bash
-pip install pytest
-pytest tests/
-```
+|---|---|
+| `check_na(df)` | Count of missing values per column, sorted worst-first |
+| `convert_types(df, mapping=None)` | Convert column dtypes — auto-detect numeric/date strings, or pass an explicit mapping |
+| `summarize(df)` | Shape, dtypes, missing %, and numeric/categorical columns in one dict |
+| `plot_missing(df)` | Horizontal bar chart of missing % per column, labeled directly on the bars |
+| `plot_dist(df, column)` | Histogram of one numeric column with the median marked |
 
 ## Why this exists
 
-pandas and matplotlib are the only dependencies — no seaborn, no plotly. The functions have boring, descriptive names and each does one job. The plots are styled with good visualization principles in mind — a high data-ink ratio, no chart junk, and direct labeling — rather than the loud matplotlib/seaborn defaults.
+Most quick-EDA tooling either pulls in a pile of dependencies or defaults to matplotlib's out-of-the-box look. `dk-eda-viz` uses only `pandas` and `matplotlib`, with a small built-in style layer so every plot shares a consistent, dark, readable theme — no extra setup required.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
